@@ -1,25 +1,15 @@
-import React, { CSSProperties } from 'react'
-import { Controlled as CodeMirror } from 'react-codemirror2'
-
-import * as codemirror from 'codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/monokai.css'
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/mode/mathematica/mathematica'
-import 'codemirror/addon/selection/active-line'
-import 'codemirror/addon/edit/matchbrackets'
-import 'codemirror/addon/display/placeholder'
-import './casbin-mode/casbin-conf'
-import './casbin-mode/casbin-csv'
+import { javascript } from '@codemirror/lang-javascript'
+import { monokai } from '@uiw/codemirror-theme-monokai'
+import { mathematica } from '@codemirror/legacy-modes/mode/mathematica'
+import { highlightActiveLine } from '@codemirror/view'
+import { matchBrackets } from '@codemirror/language'
+import { placeholder } from '@codemirror/view'
+import { casbinConfMode } from '@/app/components/editor/new-casbin-mode/new-casbin-conf'
+import { casbinCsvMode } from '@/app/components/editor/new-casbin-mode/new-casbin-csv'
+import CodeMirror from '@uiw/react-codemirror'
 import './editor.css'
 
-interface CasbinCodeMirror {
-  content: string
-  options: codemirror.EditorConfiguration
-  style?: CSSProperties
-  onChange: (text: string) => void
-  className?: string
-}
+import React, { CSSProperties } from 'react'
 
 interface EditorProps {
   text: string
@@ -27,96 +17,103 @@ interface EditorProps {
   style?: CSSProperties
 }
 
-const CasbinCodeMirror = (props: CasbinCodeMirror) => {
+export const CustomFunctionEditor = (props: EditorProps) => {
   return (
-    <div style={props.style} className={props.className}>
+    <div style={{ height: '100%', ...props.style }}>
       <CodeMirror
-        onBeforeChange={(editor, data, value) => {
+        onChange={(value) => {
           props.onChange(value)
         }}
-        options={props.options}
-        value={props.content}
+        // todo
+        // options={props.options}
+        options={{
+          lineNumbers: true,
+          indentUnit: 4,
+          styleActiveLine: true,
+          matchBrackets: true,
+          mode: 'javascript',
+          lineWrapping: true,
+          theme: 'monokai',
+        }}
+        className={'function'}
+        value={props.text}
       />
     </div>
   )
 }
 
-CasbinCodeMirror.defaultProps = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onChange: () => {},
-}
-
-export const CustomFunctionEditor = (props: EditorProps) => {
-  return (
-    <CasbinCodeMirror
-      style={{ height: '100%' }}
-      content={props.text}
-      options={{
-        lineNumbers: true,
-        indentUnit: 4,
-        styleActiveLine: true,
-        matchBrackets: true,
-        mode: 'javascript',
-        lineWrapping: true,
-        theme: 'monokai',
-      }}
-      className={'function'}
-      {...props}
-    />
-  )
-}
-
 export const ModelEditor = (props: EditorProps) => {
   return (
-    <CasbinCodeMirror
-      content={props.text}
-      options={{
-        lineNumbers: true,
-        indentUnit: 4,
-        styleActiveLine: true,
-        matchBrackets: true,
-        mode: 'casbin-conf',
-        lineWrapping: true,
-        theme: 'monokai',
-      }}
-      {...props}
-    />
+    <div style={{ height: '100%', ...props.style }}>
+      <CodeMirror
+        onChange={(value) => {
+          props.onChange(value)
+        }}
+        // todo
+        // options={props.options}
+        options={{
+          lineNumbers: true,
+          indentUnit: 4,
+          styleActiveLine: true,
+          matchBrackets: true,
+          mode: 'casbin-conf',
+          lineWrapping: true,
+          theme: 'monokai',
+        }}
+        className={'function'}
+        value={props.text}
+      />
+    </div>
   )
 }
 
 export const PolicyEditor = (props: EditorProps) => {
   return (
-    <CasbinCodeMirror
-      content={props.text}
-      options={{
-        lineNumbers: true,
-        indentUnit: 4,
-        styleActiveLine: true,
-        matchBrackets: true,
-        mode: 'casbin-csv',
-        lineWrapping: true,
-        theme: 'monokai',
-      }}
-      {...props}
-    />
+    <div style={{ height: '100%', ...props.style }}>
+      <CodeMirror
+        onChange={(value) => {
+          props.onChange(value)
+        }}
+        // todo
+        // options={props.options}
+        options={{
+          lineNumbers: true,
+          indentUnit: 4,
+          styleActiveLine: true,
+          matchBrackets: true,
+          mode: 'casbin-csv',
+          lineWrapping: true,
+          theme: 'monokai',
+        }}
+        className={'function'}
+        value={props.text}
+      />
+    </div>
   )
 }
 
 export const RequestEditor = (props: EditorProps) => {
   return (
-    <CasbinCodeMirror
-      content={props.text}
-      options={{
-        lineNumbers: true,
-        indentUnit: 4,
-        styleActiveLine: true,
-        matchBrackets: true,
-        mode: 'mathematica',
-        lineWrapping: true,
-        theme: 'monokai',
-      }}
-      {...props}
-    />
+    <div style={{ height: '100%', ...props.style }}>
+      <CodeMirror
+        onChange={(value) => {
+          props.onChange(value)
+        }}
+        // todo
+        // options={props.options}
+        options={{
+          lineNumbers: true,
+          indentUnit: 4,
+          styleActiveLine: true,
+          matchBrackets: true,
+          mode: 'mathematica',
+          lineWrapping: true,
+          theme: 'monokai',
+        }}
+        className={'function'}
+        value={props.text}
+      />
+    </div>
   )
 }
 
@@ -129,7 +126,7 @@ export const RequestResultEditor = (props: RequestResultEditorProps) => {
   return (
     <div style={props.style}>
       <CodeMirror
-        onBeforeChange={() => {
+        onChange={() => {
           return
         }}
         value={props.value}
