@@ -12,7 +12,7 @@ const nextConfig = {
    *
    * @see https://nextjs.org/docs/app/api-reference/next-config-js/basePath
    */
-  basePath: "/nextjs-github-pages",
+  basePath: "/casbin-editor-v2",
 
   /**
    * Disable server-based image optimization. Next.js does not support
@@ -23,6 +23,23 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+//   for casbin browser
+  webpack: (config, { isServer,webpack }) => {
+    // 不在服务端的Webpack配置中包含fs模块
+    if (!isServer) {
+      config.resolve.fallback = { fs: false, ...config.resolve.fallback };
+    }
+
+    // 添加ProvidePlugin插件来自动加载buffer模块
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      })
+    );
+
+    return config;
+  },
+
 };
 
 export default nextConfig;

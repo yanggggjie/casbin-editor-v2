@@ -1,11 +1,25 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    /* 宽松的配置 */
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "checkJs": false,
+    "allowUnusedLabels": true,
     "allowJs": true,
+    /* 宽松的配置 */
+    /* 更好地支持ES6的导入导出 */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    /* 更好地支持ES6的导入导出 */
+
+//    原始配置
+    "lib": ["dom", "dom.iterable", "esnext"],
+//    "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
+//    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,

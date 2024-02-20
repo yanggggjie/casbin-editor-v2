@@ -1,6 +1,6 @@
 # Next.js GitHub Pages
 
-Deploy Next.js to GitHub Pages with GitHub Actions. [View the deployed app](https://gregrickaby.github.io/nextjs-github-pages/) 🚀
+Deploy Next.js to GitHub Pages with GitHub Actions. [View the deployed app](https://yanggggjie.github.io/casbin-editor-v2/) 🚀
 
 Now with Next.js App Router support! If you need Pages Router support [click here](https://github.com/gregrickaby/nextjs-github-pages/releases/tag/pages_dir).
 
