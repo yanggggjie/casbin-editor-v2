@@ -1,5 +1,21 @@
-interface Props {}
+'use client'
+import CodeMirror from '@uiw/react-codemirror'
+import React from 'react'
+import { firestore } from './lang'
 
-export default function Page({}: Props) {
-  return <div>in page</div>
+function App() {
+  const onChange = React.useCallback((value, viewUpdate) => {
+    console.log('value:', value)
+  }, [])
+  return (
+    <CodeMirror
+      value={`db.collection("Items").where("name", "==", "temp").limit(1).get();
+`}
+      height="100vh"
+      extensions={[firestore()]}
+      onChange={onChange}
+    />
+  )
 }
+
+export default App

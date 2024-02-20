@@ -1,7 +1,9 @@
-interface Props {}
+import { ReactNode } from 'react'
 
-export default function Layout({}: Props) {
-  return <div>
-    in test
-  </div>
+interface Props {
+  children: ReactNode
+}
+
+export default function Layout({ children }: Props) {
+  return <div>{children}</div>
 }

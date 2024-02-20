@@ -5,6 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@codemirror/autocomplete':
+    specifier: ^6.12.0
+    version: 6.12.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.24.1)(@lezer/common@1.2.1)
+  '@codemirror/basic-setup':
+    specifier: ^0.20.0
+    version: 0.20.0
+  '@codemirror/highlight':
+    specifier: ^0.19.8
+    version: 0.19.8
   '@codemirror/lang-javascript':
     specifier: ^6.2.1
     version: 6.2.1
@@ -17,9 +26,15 @@ dependencies:
   '@codemirror/state':
     specifier: ^6.4.1
     version: 6.4.1
+  '@codemirror/stream-parser':
+    specifier: ^0.19.9
+    version: 0.19.9
   '@codemirror/view':
     specifier: ^6.24.1
     version: 6.24.1
+  '@lezer/highlight':
+    specifier: ^1.2.0
+    version: 1.2.0
   '@uiw/codemirror-theme-monokai':
     specifier: ^4.21.22
     version: 4.21.22(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.24.1)
@@ -328,6 +343,15 @@ packages:
       to-fast-properties: 2.0.0
     dev: false
 
+  /@codemirror/autocomplete@0.20.3:
+    resolution: {integrity: sha512-lYB+NPGP+LEzAudkWhLfMxhTrxtLILGl938w+RcFrGdrIc54A+UgmCoz+McE3IYRFp4xyQcL4uFJwo+93YdgHw==}
+    dependencies:
+      '@codemirror/language': 0.20.2
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
+      '@lezer/common': 0.16.1
+    dev: false
+
   /@codemirror/autocomplete@6.12.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.24.1)(@lezer/common@1.2.1):
     resolution: {integrity: sha512-r4IjdYFthwbCQyvqnSlx0WBHRHi8nBvU+WjJxFUij81qsBfhNudf/XKKmmC2j3m0LaOYUQTf3qiEK1J8lO1sdg==}
     peerDependencies:
@@ -342,6 +366,28 @@ packages:
       '@lezer/common': 1.2.1
     dev: false
 
+  /@codemirror/basic-setup@0.20.0:
+    resolution: {integrity: sha512-W/ERKMLErWkrVLyP5I8Yh8PXl4r+WFNkdYVSzkXYPQv2RMPSkWpr2BgggiSJ8AHF/q3GuApncDD8I4BZz65fyg==}
+    deprecated: In version 6.0, this package has been renamed to just 'codemirror'
+    dependencies:
+      '@codemirror/autocomplete': 0.20.3
+      '@codemirror/commands': 0.20.0
+      '@codemirror/language': 0.20.2
+      '@codemirror/lint': 0.20.3
+      '@codemirror/search': 0.20.1
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
+    dev: false
+
+  /@codemirror/commands@0.20.0:
+    resolution: {integrity: sha512-v9L5NNVA+A9R6zaFvaTbxs30kc69F6BkOoiEbeFw4m4I0exmDEKBILN6mK+GksJtvTzGBxvhAPlVFTdQW8GB7Q==}
+    dependencies:
+      '@codemirror/language': 0.20.2
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
+      '@lezer/common': 0.16.1
+    dev: false
+
   /@codemirror/commands@6.3.3:
     resolution: {integrity: sha512-dO4hcF0fGT9tu1Pj1D2PvGvxjeGkbC6RGcZw6Qs74TH+Ed1gw98jmUgd2axWvIZEqTeTuFrg1lEB1KV6cK9h1A==}
     dependencies:
@@ -349,6 +395,18 @@ packages:
       '@codemirror/state': 6.4.1
       '@codemirror/view': 6.24.1
       '@lezer/common': 1.2.1
+    dev: false
+
+  /@codemirror/highlight@0.19.8:
+    resolution: {integrity: sha512-v/lzuHjrYR8MN2mEJcUD6fHSTXXli9C1XGYpr+ElV6fLBIUhMTNKR3qThp611xuWfXfwDxeL7ppcbkM/MzPV3A==}
+    deprecated: As of 0.20.0, this package has been split between @lezer/highlight and @codemirror/language
+    dependencies:
+      '@codemirror/language': 0.19.10
+      '@codemirror/rangeset': 0.19.9
+      '@codemirror/state': 0.19.9
+      '@codemirror/view': 0.19.48
+      '@lezer/common': 0.15.12
+      style-mod: 4.1.0
     dev: false
 
   /@codemirror/lang-javascript@6.2.1:
@@ -361,6 +419,27 @@ packages:
       '@codemirror/view': 6.24.1
       '@lezer/common': 1.2.1
       '@lezer/javascript': 1.4.13
+    dev: false
+
+  /@codemirror/language@0.19.10:
+    resolution: {integrity: sha512-yA0DZ3RYn2CqAAGW62VrU8c4YxscMQn45y/I9sjBlqB1e2OTQLg4CCkMBuMSLXk4xaqjlsgazeOQWaJQOKfV8Q==}
+    dependencies:
+      '@codemirror/state': 0.19.9
+      '@codemirror/text': 0.19.6
+      '@codemirror/view': 0.19.48
+      '@lezer/common': 0.15.12
+      '@lezer/lr': 0.15.8
+    dev: false
+
+  /@codemirror/language@0.20.2:
+    resolution: {integrity: sha512-WB3Bnuusw0xhVvhBocieYKwJm04SOk5bPoOEYksVHKHcGHFOaYaw+eZVxR4gIqMMcGzOIUil0FsCmFk8yrhHpw==}
+    dependencies:
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
+      '@lezer/common': 0.16.1
+      '@lezer/highlight': 0.16.0
+      '@lezer/lr': 0.16.3
+      style-mod: 4.1.0
     dev: false
 
   /@codemirror/language@6.10.1:
@@ -380,11 +459,34 @@ packages:
       '@codemirror/language': 6.10.1
     dev: false
 
+  /@codemirror/lint@0.20.3:
+    resolution: {integrity: sha512-06xUScbbspZ8mKoODQCEx6hz1bjaq9m8W8DxdycWARMiiX1wMtfCh/MoHpaL7ws/KUMwlsFFfp2qhm32oaCvVA==}
+    dependencies:
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
+      crelt: 1.0.6
+    dev: false
+
   /@codemirror/lint@6.5.0:
     resolution: {integrity: sha512-+5YyicIaaAZKU8K43IQi8TBy6mF6giGeWAH7N96Z5LC30Wm5JMjqxOYIE9mxwMG1NbhT2mA3l9hA4uuKUM3E5g==}
     dependencies:
       '@codemirror/state': 6.4.1
       '@codemirror/view': 6.24.1
+      crelt: 1.0.6
+    dev: false
+
+  /@codemirror/rangeset@0.19.9:
+    resolution: {integrity: sha512-V8YUuOvK+ew87Xem+71nKcqu1SXd5QROMRLMS/ljT5/3MCxtgrRie1Cvild0G/Z2f1fpWxzX78V0U4jjXBorBQ==}
+    deprecated: As of 0.20.0, this package has been merged into @codemirror/state
+    dependencies:
+      '@codemirror/state': 0.19.9
+    dev: false
+
+  /@codemirror/search@0.20.1:
+    resolution: {integrity: sha512-ROe6gRboQU5E4z6GAkNa2kxhXqsGNbeLEisbvzbOeB7nuDYXUZ70vGIgmqPu0tB+1M3F9yWk6W8k2vrFpJaD4Q==}
+    dependencies:
+      '@codemirror/state': 0.20.1
+      '@codemirror/view': 0.20.7
       crelt: 1.0.6
     dev: false
 
@@ -396,8 +498,35 @@ packages:
       crelt: 1.0.6
     dev: false
 
+  /@codemirror/state@0.19.9:
+    resolution: {integrity: sha512-psOzDolKTZkx4CgUqhBQ8T8gBc0xN5z4gzed109aF6x7D7umpDRoimacI/O6d9UGuyl4eYuDCZmDFr2Rq7aGOw==}
+    dependencies:
+      '@codemirror/text': 0.19.6
+    dev: false
+
+  /@codemirror/state@0.20.1:
+    resolution: {integrity: sha512-ms0tlV5A02OK0pFvTtSUGMLkoarzh1F8mr6jy1cD7ucSC2X/VLHtQCxfhdSEGqTYlQF2hoZtmLv+amqhdgbwjQ==}
+    dev: false
+
   /@codemirror/state@6.4.1:
     resolution: {integrity: sha512-QkEyUiLhsJoZkbumGZlswmAhA7CBU02Wrz7zvH4SrcifbsqwlXShVXg65f3v/ts57W3dqyamEriMhij1Z3Zz4A==}
+    dev: false
+
+  /@codemirror/stream-parser@0.19.9:
+    resolution: {integrity: sha512-WTmkEFSRCetpk8xIOvV2yyXdZs3DgYckM0IP7eFi4ewlxWnJO/H4BeJZLs4wQaydWsAqTQoDyIwNH1BCzK5LUQ==}
+    deprecated: As of 0.20.0, this package has been merged into @codemirror/language
+    dependencies:
+      '@codemirror/highlight': 0.19.8
+      '@codemirror/language': 0.19.10
+      '@codemirror/state': 0.19.9
+      '@codemirror/text': 0.19.6
+      '@lezer/common': 0.15.12
+      '@lezer/lr': 0.15.8
+    dev: false
+
+  /@codemirror/text@0.19.6:
+    resolution: {integrity: sha512-T9jnREMIygx+TPC1bOuepz18maGq/92q2a+n4qTqObKwvNMg+8cMTslb8yxeEDEq7S3kpgGWxgO1UWbQRij0dA==}
+    deprecated: As of 0.20.0, this package has been merged into @codemirror/state
     dev: false
 
   /@codemirror/theme-one-dark@6.1.2:
@@ -407,6 +536,24 @@ packages:
       '@codemirror/state': 6.4.1
       '@codemirror/view': 6.24.1
       '@lezer/highlight': 1.2.0
+    dev: false
+
+  /@codemirror/view@0.19.48:
+    resolution: {integrity: sha512-0eg7D2Nz4S8/caetCTz61rK0tkHI17V/d15Jy0kLOT8dTLGGNJUponDnW28h2B6bERmPlVHKh8MJIr5OCp1nGw==}
+    dependencies:
+      '@codemirror/rangeset': 0.19.9
+      '@codemirror/state': 0.19.9
+      '@codemirror/text': 0.19.6
+      style-mod: 4.1.0
+      w3c-keyname: 2.2.8
+    dev: false
+
+  /@codemirror/view@0.20.7:
+    resolution: {integrity: sha512-pqEPCb9QFTOtHgAH5XU/oVy9UR/Anj6r+tG5CRmkNVcqSKEPmBU05WtN/jxJCFZBXf6HumzWC9ydE4qstO3TxQ==}
+    dependencies:
+      '@codemirror/state': 0.20.1
+      style-mod: 4.1.0
+      w3c-keyname: 2.2.8
     dev: false
 
   /@codemirror/view@6.24.1:
@@ -525,8 +672,22 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /@lezer/common@0.15.12:
+    resolution: {integrity: sha512-edfwCxNLnzq5pBA/yaIhwJ3U3Kz8VAUOTRg0hhxaizaI1N+qxV7EXDv/kLCkLeq2RzSFvxexlaj5Mzfn2kY0Ig==}
+    dev: false
+
+  /@lezer/common@0.16.1:
+    resolution: {integrity: sha512-qPmG7YTZ6lATyTOAWf8vXE+iRrt1NJd4cm2nJHK+v7X9TsOF6+HtuU/ctaZy2RCrluxDb89hI6KWQ5LfQGQWuA==}
+    dev: false
+
   /@lezer/common@1.2.1:
     resolution: {integrity: sha512-yemX0ZD2xS/73llMZIK6KplkjIjf2EvAHcinDi/TfJ9hS25G0388+ClHt6/3but0oOxinTcQHJLDXh6w1crzFQ==}
+    dev: false
+
+  /@lezer/highlight@0.16.0:
+    resolution: {integrity: sha512-iE5f4flHlJ1g1clOStvXNLbORJoiW4Kytso6ubfYzHnaNo/eo5SKhxs4wv/rtvwZQeZrK3we8S9SyA7OGOoRKQ==}
+    dependencies:
+      '@lezer/common': 0.16.1
     dev: false
 
   /@lezer/highlight@1.2.0:
@@ -541,6 +702,18 @@ packages:
       '@lezer/common': 1.2.1
       '@lezer/highlight': 1.2.0
       '@lezer/lr': 1.4.0
+    dev: false
+
+  /@lezer/lr@0.15.8:
+    resolution: {integrity: sha512-bM6oE6VQZ6hIFxDNKk8bKPa14hqFrV07J/vHGOeiAbJReIaQXmkVb6xQu4MR+JBTLa5arGRyAAjJe1qaQt3Uvg==}
+    dependencies:
+      '@lezer/common': 0.15.12
+    dev: false
+
+  /@lezer/lr@0.16.3:
+    resolution: {integrity: sha512-pau7um4eAw94BEuuShUIeQDTf3k4Wt6oIUOYxMmkZgDHdqtIcxWND4LRxi8nI9KuT4I1bXQv67BCapkxt7Ywqw==}
+    dependencies:
+      '@lezer/common': 0.16.1
     dev: false
 
   /@lezer/lr@1.4.0:

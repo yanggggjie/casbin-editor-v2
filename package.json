@@ -9,11 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.12.0",
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/highlight": "^0.19.8",
     "@codemirror/lang-javascript": "^6.2.1",
     "@codemirror/language": "^6.10.1",
     "@codemirror/legacy-modes": "^6.3.3",
     "@codemirror/state": "^6.4.1",
+    "@codemirror/stream-parser": "^0.19.9",
     "@codemirror/view": "^6.24.1",
+    "@lezer/highlight": "^1.2.0",
     "@uiw/codemirror-theme-monokai": "^4.21.22",
     "@uiw/react-codemirror": "^4.21.22",
     "casbin": "^5.26.1",
