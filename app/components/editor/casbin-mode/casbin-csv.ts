@@ -1,41 +1,64 @@
-// @ts-nocheck
-import CodeMirror from 'codemirror'
+import {
+  IndentContext,
+  LanguageSupport,
+  StreamLanguage,
+  StringStream,
+} from '@codemirror/language'
+import { tags as t } from '@lezer/highlight'
 
-CodeMirror.defineMode('casbin-csv', function () {
-  function tokenBase(stream, state) {
-    const ch = stream.peek()
+const token = (stream: StringStream, state) => {
+  const ch = stream.peek()
 
-    if (ch === '#') {
-      stream.skipToEnd()
-      return 'comment'
-    } else if (ch === ',') {
-      stream.eat(',')
-      return ''
-    }
-
-    if (stream.sol() && stream.match('p')) {
-      return 'def'
-    }
-    if (stream.sol() && (stream.match('g2') || stream.match('g'))) {
-      return 'keyword'
-    }
-
-    if (stream.skipTo(',')) {
-      return 'string'
-    }
-
+  if (ch === '#') {
     stream.skipToEnd()
-    return 'property'
-
-    // stream.next();
+    return 'comment'
+  } else if (ch === ',') {
+    stream.eat(',')
+    return ''
   }
 
-  return {
-    startState: function () {
-      return { tokenize: tokenBase }
-    },
-    token: function (stream, state) {
-      return state.tokenize(stream, state)
-    },
+  if (stream.sol() && stream.match('p')) {
+    return 'def'
   }
+  if (stream.sol() && (stream.match('g2') || stream.match('g'))) {
+    return 'keyword'
+  }
+
+  if (stream.skipTo(',')) {
+    return 'string'
+  }
+
+  stream.skipToEnd()
+  return 'property'
+
+  // stream.next();
+}
+
+export const CasbinPolicyLang = StreamLanguage.define({
+  name: 'firestore',
+  startState: (indentUnit: number) => {
+    return {}
+  },
+  token: token,
+  blankLine: (state: {}, indentUnit: number): void => {},
+  copyState: (state: {}) => {},
+  indent: (
+    state: {},
+    textAfter: string,
+    context: IndentContext,
+  ): number | null => {
+    return 0
+  },
+  languageData: {
+    commentTokens: { line: ';' },
+  },
+  tokenTable: {
+    p: t.keyword,
+    read: t.keyword,
+    write: t.keyword,
+  },
 })
+
+export function CasbinPolicySupport() {
+  return new LanguageSupport(CasbinPolicyLang)
+}
