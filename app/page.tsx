@@ -2,13 +2,12 @@
 import Image from 'next/image'
 import { EditorScreen } from '@/app/components/editor'
 import 'normalize.css/normalize.css'
-import { Footer } from '@/app/components/ui'
 import clsx from 'clsx'
 export default function Home() {
   return (
     <main>
       <EditorScreen />
-      <Footer>
+      <div>
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -22,7 +21,7 @@ export default function Home() {
         <span style={{ color: '#FFFFFF', float: 'right', fontSize: 14 }}>
           Copyright © {new Date().getFullYear()} Casbin contributors.
         </span>
-      </Footer>
+      </div>
     </main>
   )
 }

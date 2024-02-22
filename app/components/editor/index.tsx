@@ -1,7 +1,6 @@
 'use client'
 import React, { isValidElement, useEffect, useState } from 'react'
 import SelectModel from './select-model'
-import { Button, Echo, EditorContainer, FlexRow, HeaderTitle } from '../ui'
 import { get, getSelectedModel, Persist, reset, set } from './persist'
 import {
   ModelEditor,
@@ -68,7 +67,7 @@ export const EditorScreen = () => {
   useEffect(() => {
     const hash = window.location.hash.slice(1)
     if (hash) {
-      setEcho(<Echo>Loading Shared Content...</Echo>)
+      setEcho(<div>Loading Shared Content...</div>)
       fetch(`https://dpaste.com/${hash}.txt`)
         .then((resp) => {
           return resp.text()
@@ -87,10 +86,10 @@ export const EditorScreen = () => {
           }
           setRequestResult('')
           window.location.hash = '' // prevent duplicate load
-          setEcho(<Echo>Shared Content Loaded.</Echo>)
+          setEcho(<div>Shared Content Loaded.</div>)
         })
         .catch(() => {
-          setEcho(<Echo type={'error'}>Failed to load Shared Content.</Echo>)
+          setEcho(<div>Failed to load Shared Content.</div>)
         })
     }
   }, [])
@@ -113,7 +112,7 @@ export const EditorScreen = () => {
     } else {
       const currentPath = window.location.origin + window.location.pathname
       setShare(v as string)
-      setEcho(<Echo>{`Shared at ${currentPath}#${v}`}</Echo>)
+      setEcho(<div>{`Shared at ${currentPath}#${v}`}</div>)
     }
   }
 
@@ -126,16 +125,16 @@ export const EditorScreen = () => {
         }}
       />
       <div style={{ flex: 1 }}>
-        <FlexRow>
-          <EditorContainer>
-            <FlexRow>
-              <HeaderTitle>Model</HeaderTitle>
+        <div>
+          <div>
+            <div>
+              <div>Model</div>
               <SelectModel
                 onChange={(value) => {
                   setModelKind(value as ModelKind)
                 }}
               />
-              <Button
+              <button
                 onClick={() => {
                   const ok = window.confirm('Confirm Reset?')
                   if (ok) {
@@ -146,32 +145,32 @@ export const EditorScreen = () => {
                 style={{ marginLeft: 8 }}
               >
                 Reset
-              </Button>
-            </FlexRow>
+              </button>
+            </div>
             <ModelEditor text={modelText} onChange={setModelTextPersistent} />
-          </EditorContainer>
-          <EditorContainer>
-            <HeaderTitle>Policy</HeaderTitle>
+          </div>
+          <div>
+            <div>Policy</div>
             <PolicyEditor text={policy} onChange={setPolicyPersistent} />
-          </EditorContainer>
-        </FlexRow>
+          </div>
+        </div>
 
-        <FlexRow>
-          <EditorContainer>
-            <FlexRow>
-              <HeaderTitle>Request</HeaderTitle>
+        <div>
+          <div>
+            <div>
+              <div>Request</div>
               <SetupEnforceContext
                 data={enforceContextData}
                 onChange={setEnforceContextDataPersistent}
               />
-            </FlexRow>
+            </div>
             <RequestEditor text={request} onChange={setRequestPersistent} />
-          </EditorContainer>
-          <EditorContainer>
-            <HeaderTitle>Enforcement Result</HeaderTitle>
+          </div>
+          <div>
+            <div>Enforcement Result</div>
             <RequestResultEditor value={requestResult} />
-          </EditorContainer>
-        </FlexRow>
+          </div>
+        </div>
 
         <div style={{ padding: 8 }}>
           <Syntax
@@ -211,7 +210,7 @@ export const EditorScreen = () => {
               content={share}
               cb={() => {
                 setShare('')
-                setEcho(<Echo>Copied.</Echo>)
+                setEcho(<div>Copied.</div>)
               }}
             />
           )}

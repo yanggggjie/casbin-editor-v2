@@ -1,4 +1,3 @@
-import { Button } from '../ui'
 import React from 'react'
 
 interface CopyProps {
@@ -22,7 +21,7 @@ const Copy = (props: CopyProps) => {
   }
 
   return (
-    <Button
+    <button
       style={{ marginRight: 8 }}
       onClick={() => {
         return copy(
@@ -31,7 +30,7 @@ const Copy = (props: CopyProps) => {
       }}
     >
       COPY
-    </Button>
+    </button>
   )
 }
 

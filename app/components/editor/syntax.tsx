@@ -1,28 +1,27 @@
-import React from 'react';
-import { Button, Echo } from '../ui';
-import { Config } from 'casbin';
+import React from 'react'
+import { Config } from 'casbin'
 
 interface SyntaxProps {
-  model: string;
-  onResponse: (com: JSX.Element) => void;
+  model: string
+  onResponse: (com: JSX.Element) => void
 }
 
 const Syntax = (props: SyntaxProps) => {
   return (
-    <Button
+    <button
       style={{ marginRight: 8 }}
       onClick={() => {
         try {
-          Config.newConfigFromText(props.model);
-          props.onResponse(<Echo>Passed</Echo>);
+          Config.newConfigFromText(props.model)
+          props.onResponse(<div>Passed</div>)
         } catch (e) {
-          props.onResponse(<Echo type={'error'}>{e.message}</Echo>);
+          props.onResponse(<div>{e.message}</div>)
         }
       }}
     >
       SYNTAX VALIDATE
-    </Button>
-  );
-};
+    </button>
+  )
+}
 
-export default Syntax;
+export default Syntax

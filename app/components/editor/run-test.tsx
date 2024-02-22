@@ -1,79 +1,87 @@
-import React from 'react';
-import { Button, Echo } from '../ui';
-import { DefaultRoleManager, newEnforcer, newModel, StringAdapter, Util } from 'casbin';
-import { newEnforceContext } from './setup-enforce-context';
+import React from 'react'
+import {
+  DefaultRoleManager,
+  newEnforcer,
+  newModel,
+  StringAdapter,
+  Util,
+} from 'casbin'
+import { newEnforceContext } from './setup-enforce-context'
 
 interface RunTestProps {
-  model: string;
-  modelKind: string;
-  policy: string;
-  customConfig: string;
-  request: string;
-  enforceContextData: Map<string, string>;
-  onResponse: (com: JSX.Element | any[]) => void;
+  model: string
+  modelKind: string
+  policy: string
+  customConfig: string
+  request: string
+  enforceContextData: Map<string, string>
+  onResponse: (com: JSX.Element | any[]) => void
   // parseABAC: boolean;
 }
 
 function parseABACRequest(line: string): any[] {
-  let value: string | Record<string, any> = '';
-  let objectToken = 0;
-  let parseToObject = false;
-  const request = [];
+  let value: string | Record<string, any> = ''
+  let objectToken = 0
+  let parseToObject = false
+  const request = []
 
   for (let i = 0; i < line.length; i++) {
     if (objectToken === 0 && line[i] === ',') {
       if (parseToObject) {
         // eslint-disable-next-line
-        value = eval(`(${value})`);
+        value = eval(`(${value})`)
       }
       if (typeof value === 'string') {
-        value = value.trim();
+        value = value.trim()
       }
-      request.push(value);
+      request.push(value)
 
-      value = '';
-      parseToObject = false;
-      continue;
+      value = ''
+      parseToObject = false
+      continue
     }
 
-    value += line[i];
+    value += line[i]
 
     if (line[i] === '{') {
-      parseToObject = true;
-      objectToken++;
-      continue;
+      parseToObject = true
+      objectToken++
+      continue
     }
 
     if (line[i] === '}') {
-      objectToken--;
+      objectToken--
     }
   }
 
   if (objectToken !== 0) {
-    throw new Error(`invalid request ${line}`);
+    throw new Error(`invalid request ${line}`)
   }
 
   if (value) {
     if (parseToObject) {
       // eslint-disable-next-line
-      value = eval(`(${value})`);
+      value = eval(`(${value})`)
     }
     if (typeof value === 'string') {
-      value = value.trim();
+      value = value.trim()
     }
-    request.push(value);
+    request.push(value)
   }
 
-  return request;
+  return request
 }
 
 async function enforcer(props: RunTestProps) {
-  const startTime = performance.now();
-  const result = [];
+  const startTime = performance.now()
+  const result = []
   try {
-    const e = await newEnforcer(newModel(props.model), props.policy ? new StringAdapter(props.policy) : undefined);
+    const e = await newEnforcer(
+      newModel(props.model),
+      props.policy ? new StringAdapter(props.policy) : undefined,
+    )
 
-    const customConfigCode = props.customConfig;
+    const customConfigCode = props.customConfig
     if (customConfigCode) {
       try {
         const builtinFunc = {
@@ -85,90 +93,115 @@ async function enforcer(props: RunTestProps) {
           keyMatch4: Util.keyMatch4Func,
           regexMatch: Util.regexMatchFunc,
           ipMatch: Util.ipMatchFunc,
-          globMatch: Util.globMatch
-        };
+          globMatch: Util.globMatch,
+        }
 
         // eslint-disable-next-line
-        let config = eval(customConfigCode);
+        let config = eval(customConfigCode)
         if (config) {
-          config = { ...config, functions: { ...config.functions, ...builtinFunc } };
+          config = {
+            ...config,
+            functions: { ...config.functions, ...builtinFunc },
+          }
           if (config?.functions) {
-            Object.keys(config.functions).forEach(key => e.addFunction(key, config.functions[key]));
+            Object.keys(config.functions).forEach((key) => {
+              return e.addFunction(key, config.functions[key])
+            })
           }
 
-          const rm = e.getRoleManager() as DefaultRoleManager;
-          const matchingForGFunction = config.matchingForGFunction;
+          const rm = e.getRoleManager() as DefaultRoleManager
+          const matchingForGFunction = config.matchingForGFunction
           if (matchingForGFunction) {
             if (typeof matchingForGFunction === 'function') {
-              await rm.addMatchingFunc(matchingForGFunction);
+              await rm.addMatchingFunc(matchingForGFunction)
             }
             if (typeof matchingForGFunction === 'string') {
               if (matchingForGFunction in config.functions) {
-                await rm.addMatchingFunc(config.functions[matchingForGFunction]);
+                await rm.addMatchingFunc(config.functions[matchingForGFunction])
               } else {
-                props.onResponse(<Echo type={'error'}>Must sure the {matchingForGFunction}() in config.functions</Echo>);
-                return;
+                props.onResponse(
+                  <div>
+                    Must sure the {matchingForGFunction}() in config.functions
+                  </div>,
+                )
+                return
               }
             }
           }
 
-          const matchingDomainForGFunction = config.matchingDomainForGFunction;
+          const matchingDomainForGFunction = config.matchingDomainForGFunction
           if (matchingDomainForGFunction) {
             if (typeof matchingDomainForGFunction === 'function') {
-              await rm.addDomainMatchingFunc(matchingDomainForGFunction);
+              await rm.addDomainMatchingFunc(matchingDomainForGFunction)
             }
             if (typeof matchingDomainForGFunction === 'string') {
               if (matchingDomainForGFunction in config.functions) {
-                await rm.addDomainMatchingFunc(config.functions[matchingDomainForGFunction]);
+                await rm.addDomainMatchingFunc(
+                  config.functions[matchingDomainForGFunction],
+                )
               } else {
-                props.onResponse(<Echo type={'error'}>Must sure the {matchingDomainForGFunction}() in config.functions</Echo>);
-                return;
+                props.onResponse(
+                  <div>
+                    Must sure the {matchingDomainForGFunction}() in
+                    config.functions
+                  </div>,
+                )
+                return
               }
             }
           }
         }
       } catch (e) {
-        props.onResponse(<Echo type={'error'}>Please check syntax in Custom Function Editor: {e.message}</Echo>);
-        return;
+        props.onResponse(
+          <div>Please check syntax in Custom Function Editor: {e.message}</div>,
+        )
+        return
       }
     }
 
-    const requests = props.request.split('\n');
+    const requests = props.request.split('\n')
 
     for (const n of requests) {
-      const line = n.trim();
+      const line = n.trim()
       if (!line) {
-        result.push('// ignore');
-        continue;
+        result.push('// ignore')
+        continue
       }
 
       if (line[0] === '#') {
-        result.push('// ignore');
-        continue;
+        result.push('// ignore')
+        continue
       }
 
-      const rvals = parseABACRequest(n);
-      const ctx = newEnforceContext(props.enforceContextData);
+      const rvals = parseABACRequest(n)
+      const ctx = newEnforceContext(props.enforceContextData)
 
-      result.push(await e.enforce(ctx, ...rvals));
+      result.push(await e.enforce(ctx, ...rvals))
     }
 
-    const stopTime = performance.now();
+    const stopTime = performance.now()
 
-    props.onResponse(<Echo>{'Done in ' + (stopTime - startTime).toFixed(2) + 'ms'}</Echo>);
-    props.onResponse(result);
+    props.onResponse(
+      <div>{'Done in ' + (stopTime - startTime).toFixed(2) + 'ms'}</div>,
+    )
+    props.onResponse(result)
   } catch (e) {
-    props.onResponse(<Echo type={'error'}>{e.message}</Echo>);
-    props.onResponse([]);
+    props.onResponse(<div>{e.message}</div>)
+    props.onResponse([])
   }
 }
 
 const RunTest = (props: RunTestProps) => {
   return (
-    <Button style={{ marginRight: 8 }} onClick={() => enforcer(props)}>
+    <button
+      style={{ marginRight: 8 }}
+      onClick={() => {
+        return enforcer(props)
+      }}
+    >
       RUN THE TEST
-    </Button>
-  );
-};
+    </button>
+  )
+}
 
-export default RunTest;
+export default RunTest
