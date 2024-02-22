@@ -34,6 +34,7 @@ function parseABACRequest(line: string): any[] {
       if (typeof value === 'string') {
         value = value.trim()
       }
+      // @ts-ignore
       request.push(value)
 
       value = ''
@@ -66,6 +67,7 @@ function parseABACRequest(line: string): any[] {
     if (typeof value === 'string') {
       value = value.trim()
     }
+    // @ts-ignore
     request.push(value)
   }
 
@@ -153,7 +155,9 @@ async function enforcer(props: RunTestProps) {
         }
       } catch (e) {
         props.onResponse(
-          <div>Please check syntax in Custom Function Editor: {e.message}</div>,
+          <div>
+            Please check syntax in Custom Function Editor: {(e as any).message}
+          </div>,
         )
         return
       }
@@ -164,11 +168,13 @@ async function enforcer(props: RunTestProps) {
     for (const n of requests) {
       const line = n.trim()
       if (!line) {
+        // @ts-ignore
         result.push('// ignore')
         continue
       }
 
       if (line[0] === '#') {
+        // @ts-ignore
         result.push('// ignore')
         continue
       }
@@ -176,6 +182,7 @@ async function enforcer(props: RunTestProps) {
       const rvals = parseABACRequest(n)
       const ctx = newEnforceContext(props.enforceContextData)
 
+      // @ts-ignore
       result.push(await e.enforce(ctx, ...rvals))
     }
 
@@ -186,7 +193,7 @@ async function enforcer(props: RunTestProps) {
     )
     props.onResponse(result)
   } catch (e) {
-    props.onResponse(<div>{e.message}</div>)
+    props.onResponse(<div>{(e as any).message}</div>)
     props.onResponse([])
   }
 }

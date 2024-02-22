@@ -15,7 +15,7 @@ const Syntax = (props: SyntaxProps) => {
           Config.newConfigFromText(props.model)
           props.onResponse(<div>Passed</div>)
         } catch (e) {
-          props.onResponse(<div>{e.message}</div>)
+          props.onResponse(<div>{(e as any).message}</div>)
         }
       }}
     >
