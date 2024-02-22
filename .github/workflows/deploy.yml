@@ -61,9 +61,6 @@ jobs:
       - name: Build with Next.js
         run: pnpm run build
 
-      - name: Export Next.js static files
-        run: pnpm run export
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
