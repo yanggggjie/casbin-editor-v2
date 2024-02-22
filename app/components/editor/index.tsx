@@ -1,27 +1,27 @@
 'use client'
-import React, { isValidElement, useEffect, useState } from 'react'
-import SelectModel from './select-model'
-import Syntax from './syntax'
-import RunTest from './run-test'
-import { ModelKind } from './casbin-mode/example'
-import { Settings } from './settings'
-import Share, { ShareFormat } from './share'
-import Copy from './copy'
+import React, { isValidElement, ReactNode, useEffect, useState } from 'react'
 import {
-  defaultEnforceContextData,
-  SetupEnforceContext,
-} from './setup-enforce-context'
-import { ModelEditor } from '@/app/components/editor/editors/ModalEditor'
-import { PolicyEditor } from '@/app/components/editor/editors/PolicyEditor'
-import { RequestEditor } from '@/app/components/editor/editors/RequestEditor'
-import { RequestResultEditor } from '@/app/components/editor/editors/RequestResultEditor'
+  defaultCustomConfig,
+  defaultEnforceContext,
+  example,
+  ModelKind,
+} from './casbin-mode/example'
+import { Settings } from './settings'
+import { ShareFormat } from './share'
+import { defaultEnforceContextData } from './setup-enforce-context'
+
+import Modal from '@/app/components/editor/parts/Modal'
+import Policy from '@/app/components/editor/parts/Policy'
+import Request from '@/app/components/editor/parts/Request'
+import EnforcementResult from '@/app/components/editor/parts/EnforcementResult'
+import ButtonGroup from '@/app/components/editor/parts/ButtonGroup'
 
 export const EditorScreen = () => {
-  const [modelKind, setModelKind] = useState<ModelKind>()
+  const [modelKind, setModelKind] = useState<ModelKind>('basic')
   const [modelText, setModelText] = useState('')
   const [policy, setPolicy] = useState('')
   const [request, setRequest] = useState('')
-  const [echo, setEcho] = useState<JSX.Element>(<></>)
+  const [echo, setEcho] = useState<ReactNode>(<></>)
   const [requestResult, setRequestResult] = useState('')
   const [customConfig, setCustomConfig] = useState('')
   const [share, setShare] = useState('')
@@ -80,19 +80,23 @@ export const EditorScreen = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   setPolicy()
-  //   setModelText()
-  //   setRequest()
-  //   setCustomConfig(get(Persist.CUSTOM_FUNCTION, modelKind))
-  //   setEnforceContextData(
-  //     new Map(
-  //       Object.entries(JSON.parse(get(Persist.ENFORCE_CONTEXT, modelKind)!)),
-  //     ),
-  //   )
-  // }, [modelKind])
+  useEffect(() => {
+    setPolicy(example[modelKind].policy)
+    setModelText(example[modelKind].model)
+    setRequest(example[modelKind].request)
+    setCustomConfig(defaultCustomConfig)
+    setEnforceContextData(
+      new Map(
+        Object.entries(
+          JSON.parse(
+            example[modelKind].enforceContext || defaultEnforceContext,
+          ),
+        ),
+      ),
+    )
+  }, [modelKind])
 
-  function handleShare(v: JSX.Element | string) {
+  function handleShare(v: ReactNode | string) {
     if (isValidElement(v)) {
       setEcho(v)
     } else {
@@ -103,104 +107,46 @@ export const EditorScreen = () => {
   }
 
   return (
-    <div>
+    <div className={'flex flex-row'}>
       <Settings
         text={customConfig}
         onCustomConfigChange={(v) => {
           setCustomConfigPersistent(v)
         }}
       />
-      <div style={{ flex: 1 }}>
+      <div>
         <div>
-          <div>
-            <div>
-              <div>Model</div>
-              <SelectModel
-                onChange={(value) => {
-                  setModelKind(value as ModelKind)
-                }}
-              />
-              <button
-                onClick={() => {
-                  const ok = window.confirm('Confirm Reset?')
-                  if (ok) {
-                    window.location.reload()
-                  }
-                }}
-                style={{ marginLeft: 8 }}
-              >
-                Reset
-              </button>
-            </div>
-            <ModelEditor text={modelText} onChange={setModelTextPersistent} />
-          </div>
-          <div>
-            <div>Policy</div>
-            <PolicyEditor text={policy} onChange={setPolicyPersistent} />
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <div>
-              <div>Request</div>
-              <SetupEnforceContext
-                data={enforceContextData}
-                onChange={setEnforceContextDataPersistent}
-              />
-            </div>
-            <RequestEditor text={request} onChange={setRequestPersistent} />
-          </div>
-          <div>
-            <div>Enforcement Result</div>
-            <RequestResultEditor value={requestResult} />
-          </div>
-        </div>
-
-        <div style={{ padding: 8 }}>
-          <Syntax
-            model={modelText}
-            onResponse={(component) => {
-              return setEcho(component)
-            }}
-          />
-          <RunTest
-            modelKind={modelKind}
-            model={modelText}
+          <Modal
+            setModelKind={setModelKind}
+            modelText={modelText}
+            setModelTextPersistent={setModelTextPersistent}
+          ></Modal>
+          <Policy
             policy={policy}
-            customConfig={customConfig}
+            setPolicyPersistent={setPolicyPersistent}
+          ></Policy>
+          <Request
             request={request}
+            setRequestPersistent={setRequest}
             enforceContextData={enforceContextData}
-            onResponse={(v) => {
-              if (isValidElement(v)) {
-                setEcho(v)
-              } else if (Array.isArray(v)) {
-                setRequestResult(v.join('\n'))
-              }
-            }}
-          />
-          {!share ? (
-            <Share
-              onResponse={(v) => {
-                return handleShare(v)
-              }}
-              model={modelText}
-              policy={policy}
-              customConfig={customConfig}
-              request={request}
-              enforceContext={Object.entries(enforceContextData)}
-            />
-          ) : (
-            <Copy
-              content={share}
-              cb={() => {
-                setShare('')
-                setEcho(<div>Copied.</div>)
-              }}
-            />
-          )}
-          <div style={{ display: 'inline-block' }}>{echo}</div>
+            setEnforceContextDataPersistent={setEnforceContextDataPersistent}
+          ></Request>
+          <EnforcementResult requestResult={requestResult}></EnforcementResult>
         </div>
+        <ButtonGroup
+          modelText={modelText}
+          echo={echo}
+          setEcho={setEcho}
+          modelKind={modelKind}
+          policy={policy}
+          customConfig={customConfig}
+          request={request}
+          enforceContextData={enforceContextData}
+          setRequestResult={setRequestResult}
+          share={share}
+          setShare={setShare}
+          handleShare={handleShare}
+        ></ButtonGroup>
       </div>
     </div>
   )

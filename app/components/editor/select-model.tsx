@@ -28,8 +28,4 @@ const SelectModel = (props: SelectModelProps) => {
   )
 }
 
-SelectModel.defaultProps = {
-  onChange: console.log,
-  defaultValue: 'basic',
-}
 export default SelectModel
