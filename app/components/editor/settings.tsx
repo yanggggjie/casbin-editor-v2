@@ -1,59 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import styled from 'styled-components'
-import { CustomFunctionEditor } from './editor'
-import { useLocalStorage } from './use-local-storage'
-
-const Container = styled.div<{ open: boolean }>`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #ddd;
-  background: #ffffff;
-  width: ${(props) => {
-    return props.open ? '18rem' : '1rem'
-  }};
-  padding: ${(props) => {
-    return props.open ? '1rem' : 0
-  }};
-`
-
-const ToggleButtonContainer = styled.div`
-  display: block;
-  cursor: pointer;
-  position: absolute;
-  top: 2px;
-  border-radius: 50%;
-  background: #ffffff;
-  right: -0.75rem;
-  height: 1.5rem;
-  width: 1.5rem;
-  color: #000000;
-  box-shadow:
-    rgb(9 30 66 / 8%) 0 0 0 1px,
-    rgb(9 30 66 / 8%) 0 2px 4px 1px;
-
-  ${Container}:hover & {
-    display: block;
-  }
-`
+import { CustomFunctionEditor } from '@/app/components/editor/editors/CustomFunctionEditor'
 
 interface SettingsProps {
   text: string
-  // enableABAC: boolean;
-  // onEnableABAC: (v: boolean) => void;
   onCustomConfigChange: (text: string) => void
 }
 
 export function Settings(props: SettingsProps) {
-  const [open, setOpen] = useLocalStorage(true, 'SETTINGS_OPEN')
+  const [open, setOpen] = useState(true)
 
   return (
-    <Container open={open}>
-      <ToggleButtonContainer
+    <div>
+      <div
         onClick={() => {
           return setOpen(!open)
         }}
+        className={'w-10 h-10'}
       >
         <svg
           style={{
@@ -68,24 +31,18 @@ export function Settings(props: SettingsProps) {
             d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
           />
         </svg>
-      </ToggleButtonContainer>
-
-      <div
-        style={{
-          display: open ? 'flex' : 'none',
-          flexDirection: 'column',
-          flexGrow: 1,
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          <span style={{ margin: '0.5rem 0' }}>Custom config</span>
-          <CustomFunctionEditor
-            style={{ flex: 1, position: 'relative' }}
-            text={props.text}
-            onChange={props.onCustomConfigChange}
-          />
-        </div>
       </div>
-    </Container>
+      <div>
+        {open && (
+          <div>
+            <span>Custom config</span>
+            <CustomFunctionEditor
+              text={props.text}
+              onChange={props.onCustomConfigChange}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   )
 }

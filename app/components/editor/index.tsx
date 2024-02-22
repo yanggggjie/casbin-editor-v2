@@ -1,32 +1,23 @@
 'use client'
 import React, { isValidElement, useEffect, useState } from 'react'
 import SelectModel from './select-model'
-import { get, getSelectedModel, Persist, reset, set } from './persist'
-import {
-  ModelEditor,
-  PolicyEditor,
-  RequestEditor,
-  RequestResultEditor,
-} from './editor'
 import Syntax from './syntax'
 import RunTest from './run-test'
 import { ModelKind } from './casbin-mode/example'
 import { Settings } from './settings'
-import styled from 'styled-components'
 import Share, { ShareFormat } from './share'
 import Copy from './copy'
 import {
   defaultEnforceContextData,
   SetupEnforceContext,
 } from './setup-enforce-context'
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-`
+import { ModelEditor } from '@/app/components/editor/editors/ModalEditor'
+import { PolicyEditor } from '@/app/components/editor/editors/PolicyEditor'
+import { RequestEditor } from '@/app/components/editor/editors/RequestEditor'
+import { RequestResultEditor } from '@/app/components/editor/editors/RequestResultEditor'
 
 export const EditorScreen = () => {
-  const [modelKind, setModelKind] = useState<ModelKind>(getSelectedModel())
+  const [modelKind, setModelKind] = useState<ModelKind>()
   const [modelText, setModelText] = useState('')
   const [policy, setPolicy] = useState('')
   const [request, setRequest] = useState('')
@@ -39,28 +30,23 @@ export const EditorScreen = () => {
   )
 
   function setPolicyPersistent(text: string): void {
-    set(Persist.POLICY, text)
     setPolicy(text)
   }
 
   function setModelTextPersistent(text: string): void {
-    set(Persist.MODEL, text)
     setModelText(text)
   }
 
   function setCustomConfigPersistent(text: string): void {
-    set(Persist.CUSTOM_FUNCTION, text)
     setCustomConfig(text)
   }
 
   function setRequestPersistent(text: string): void {
-    set(Persist.REQUEST, text)
     setRequest(text)
   }
 
   function setEnforceContextDataPersistent(map: Map<string, string>): void {
     const text = JSON.stringify(Object.fromEntries(map))
-    set(Persist.ENFORCE_CONTEXT, text)
     setEnforceContextData(new Map(map))
   }
 
@@ -94,17 +80,17 @@ export const EditorScreen = () => {
     }
   }, [])
 
-  useEffect(() => {
-    setPolicy(get(Persist.POLICY, modelKind))
-    setModelText(get(Persist.MODEL, modelKind))
-    setRequest(get(Persist.REQUEST, modelKind))
-    setCustomConfig(get(Persist.CUSTOM_FUNCTION, modelKind))
-    setEnforceContextData(
-      new Map(
-        Object.entries(JSON.parse(get(Persist.ENFORCE_CONTEXT, modelKind)!)),
-      ),
-    )
-  }, [modelKind])
+  // useEffect(() => {
+  //   setPolicy()
+  //   setModelText()
+  //   setRequest()
+  //   setCustomConfig(get(Persist.CUSTOM_FUNCTION, modelKind))
+  //   setEnforceContextData(
+  //     new Map(
+  //       Object.entries(JSON.parse(get(Persist.ENFORCE_CONTEXT, modelKind)!)),
+  //     ),
+  //   )
+  // }, [modelKind])
 
   function handleShare(v: JSX.Element | string) {
     if (isValidElement(v)) {
@@ -117,7 +103,7 @@ export const EditorScreen = () => {
   }
 
   return (
-    <Container>
+    <div>
       <Settings
         text={customConfig}
         onCustomConfigChange={(v) => {
@@ -138,7 +124,6 @@ export const EditorScreen = () => {
                 onClick={() => {
                   const ok = window.confirm('Confirm Reset?')
                   if (ok) {
-                    reset(modelKind)
                     window.location.reload()
                   }
                 }}
@@ -217,6 +202,6 @@ export const EditorScreen = () => {
           <div style={{ display: 'inline-block' }}>{echo}</div>
         </div>
       </div>
-    </Container>
+    </div>
   )
 }
