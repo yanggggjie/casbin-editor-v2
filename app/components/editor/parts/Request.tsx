@@ -17,7 +17,7 @@ export default function Request({
 }: Props) {
   return (
     <div>
-      <div>
+      <div className={'h-10 flex items-center justify-center '}>
         <div>Request</div>
         <SetupEnforceContext
           data={enforceContextData}

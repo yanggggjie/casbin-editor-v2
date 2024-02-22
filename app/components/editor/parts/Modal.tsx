@@ -16,8 +16,8 @@ export default function Modal({
 }: Props) {
   return (
     <div>
-      <div>
-        <div>Model</div>
+      <div className={'flex flex-row items-center'}>
+        <div className={'h-10 flex items-center justify-center '}>Model</div>
         <SelectModel
           onChange={(value) => {
             setModelKind(value as ModelKind)

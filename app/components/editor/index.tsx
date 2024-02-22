@@ -6,7 +6,7 @@ import {
   example,
   ModelKind,
 } from './casbin-mode/example'
-import { Settings } from './settings'
+import { Settings } from './parts/settings'
 import { ShareFormat } from './share'
 import { defaultEnforceContextData } from './setup-enforce-context'
 
@@ -15,6 +15,7 @@ import Policy from '@/app/components/editor/parts/Policy'
 import Request from '@/app/components/editor/parts/Request'
 import EnforcementResult from '@/app/components/editor/parts/EnforcementResult'
 import ButtonGroup from '@/app/components/editor/parts/ButtonGroup'
+import { clsx } from 'clsx'
 
 export const EditorScreen = () => {
   const [modelKind, setModelKind] = useState<ModelKind>('basic')
@@ -107,31 +108,45 @@ export const EditorScreen = () => {
   }
 
   return (
-    <div className={'flex flex-row'}>
-      <Settings
-        text={customConfig}
-        onCustomConfigChange={(v) => {
-          setCustomConfigPersistent(v)
-        }}
-      />
-      <div>
-        <div>
-          <Modal
-            setModelKind={setModelKind}
-            modelText={modelText}
-            setModelTextPersistent={setModelTextPersistent}
-          ></Modal>
-          <Policy
-            policy={policy}
-            setPolicyPersistent={setPolicyPersistent}
-          ></Policy>
-          <Request
-            request={request}
-            setRequestPersistent={setRequest}
-            enforceContextData={enforceContextData}
-            setEnforceContextDataPersistent={setEnforceContextDataPersistent}
-          ></Request>
-          <EnforcementResult requestResult={requestResult}></EnforcementResult>
+    <div className={clsx('flex flex-row  gap-1')}>
+      <div className={'w-64'}>
+        <Settings
+          text={customConfig}
+          onCustomConfigChange={(v) => {
+            setCustomConfigPersistent(v)
+          }}
+        />
+      </div>
+      <div className={clsx('flex flex-col grow')}>
+        <div className={clsx('flex flex-row  gap-1')}>
+          <div className={'flex-1'}>
+            <Modal
+              setModelKind={setModelKind}
+              modelText={modelText}
+              setModelTextPersistent={setModelTextPersistent}
+            ></Modal>
+          </div>
+          <div className={'flex-1'}>
+            <Policy
+              policy={policy}
+              setPolicyPersistent={setPolicyPersistent}
+            ></Policy>
+          </div>
+        </div>
+        <div className={'flex flex-row gap-1'}>
+          <div className={'flex-1'}>
+            <Request
+              request={request}
+              setRequestPersistent={setRequest}
+              enforceContextData={enforceContextData}
+              setEnforceContextDataPersistent={setEnforceContextDataPersistent}
+            ></Request>
+          </div>
+          <div className={'flex-1'}>
+            <EnforcementResult
+              requestResult={requestResult}
+            ></EnforcementResult>
+          </div>
         </div>
         <ButtonGroup
           modelText={modelText}

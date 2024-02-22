@@ -43,8 +43,9 @@ export const SetupEnforceContext = ({
   }, [data])
 
   return (
-    <>
+    <div className={''}>
       <input
+        className={'w-10'}
         value={enforceContextData.get(r)}
         placeholder={r}
         onChange={(event) => {
@@ -52,6 +53,7 @@ export const SetupEnforceContext = ({
         }}
       />
       <input
+        className={'w-10'}
         value={enforceContextData.get(p)}
         placeholder={p}
         onChange={(event) => {
@@ -59,6 +61,7 @@ export const SetupEnforceContext = ({
         }}
       />
       <input
+        className={'w-10'}
         value={enforceContextData.get(e)}
         placeholder={e}
         onChange={(event) => {
@@ -66,12 +69,13 @@ export const SetupEnforceContext = ({
         }}
       />
       <input
+        className={'w-10'}
         value={enforceContextData.get(m)}
         placeholder={m}
         onChange={(event) => {
           return handleEnforceContextChange(m, event.target.value)
         }}
       />
-    </>
+    </div>
   )
 }

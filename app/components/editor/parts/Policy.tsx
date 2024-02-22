@@ -9,7 +9,7 @@ interface Props {
 export default function Policy({ policy, setPolicyPersistent }: Props) {
   return (
     <div>
-      <div>Policy</div>
+      <div className={'h-10 flex items-center justify-center '}>Policy</div>
       <PolicyEditor text={policy} onChange={setPolicyPersistent} />
     </div>
   )
