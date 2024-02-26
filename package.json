@@ -16,7 +16,7 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.24.1",
     "@lezer/highlight": "^1.2.0",
-    "@uiw/codemirror-theme-monokai": "^4.21.22",
+    "@uiw/codemirror-theme-monokai": "^4.21.24",
     "@uiw/react-codemirror": "^4.21.22",
     "casbin": "^5.26.1",
     "clsx": "^2.1.0",
